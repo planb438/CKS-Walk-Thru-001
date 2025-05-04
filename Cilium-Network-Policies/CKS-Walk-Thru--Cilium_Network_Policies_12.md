@@ -1,11 +1,6 @@
 ## Cilium Network Policies
 
 
-Perfect — that’s a solid discovery and yes, log buffering can definitely delay Falco alerts.
-We’ll continue with the next security hardening step now and circle back later for:
-• 🔐 Secrets Encryption at Rest
-
-• 🐺 Falco alert validation and custom rules
 
 
 
@@ -16,28 +11,6 @@ Ready to begin with network policy basics and Cilium setup validation?
 
 
 
-4o
-
-
-
-
-
-
-
-You said:
-yes
-
-
-
-
-
-
-
-
-
-
-
-ChatGPT said:
 Awesome — let’s lock down pod-to-pod communication using Cilium 🔒🐡
 
 🌐 Step 1: Validate Cilium Is Installed & Managing Networking
@@ -50,8 +23,6 @@ kubectl get pods -n kube-system -l k8s-app=cilium
 
 
 You should see one Cilium pod per node:
-sql
-CopyEdit
 
 
 NAME           READY   STATUS    RESTARTS   AGE
@@ -60,8 +31,6 @@ cilium-def2    1/1     Running   0          3d
 
 
 You can also check the CNI config:
-bash
-CopyEdit
 
 
 kubectl get daemonset cilium -n kube-system
@@ -71,16 +40,13 @@ If it’s not installed yet, we’ll install it — just let me know.
 
 🔐 Step 2: Create Two Test Pods in a Namespace
 Let’s create a namespace and two pods to simulate isolated microservices.
-bash
-CopyEdit
+
 
 
 kubectl create ns netpol-demo
 
 
 Now apply this YAML:
-yaml
-CopyEdit
 
 
 apiVersion: v1
@@ -95,6 +61,8 @@ spec:
   - name: bb
     image: busybox
     command: ["sleep", "3600"]
+
+
 ---
 apiVersion: v1
 kind: Pod
@@ -110,8 +78,6 @@ spec:
 
 
 Apply with:
-bash
-CopyEdit
 
 
 kubectl apply -f <filename>.yaml
@@ -119,10 +85,10 @@ kubectl apply -f <filename>.yaml
 
 Or paste directly into kubectl apply -f -.
 
+
 🔎 Step 3: Test Communication (Pre-NetworkPolicy)
 Wait a few seconds for the pods to come up, then exec into the client:
-bash
-CopyEdit
+
 
 kubectl get pods -n netpol-demo -o wide
 kubectl exec -n netpol-demo busybox-client -- wget -qO- (nginx-server) ## the ip address of the nginx-server
@@ -144,8 +110,7 @@ You verified:
 Let’s now block all ingress traffic to nginx-server.
 
 1️⃣ Create a default deny policy:
-yaml
-CopyEdit
+
 
 
 # deny-all.yaml
@@ -160,9 +125,9 @@ spec:
   - Ingress
 
 
+
 Apply it:
-bash
-CopyEdit
+
 
 
 kubectl apply -f deny-all.yaml
@@ -171,8 +136,7 @@ kubectl apply -f deny-all.yaml
 
 2️⃣ Re-test Connection (Should Fail)
 Try the client again:
-bash
-CopyEdit
+
 
 
 kubectl exec -n netpol-demo busybox-client -- wget -qO- <nginx-server IP>
@@ -247,35 +211,11 @@ Let me know when confirmed, and we’ll optionally test by spinning up a second,
 
 
 
-4o
-
-
-
-
-
-
-
-You said:
-yes
-
-
-
-
-
-
-
-
-
-
-
-ChatGPT said:
 Perfect — let’s prove the policy is working by trying to access the nginx-server from a pod without the required label.
 
 🚫 Step: Test from an Unlabeled Pod (Should Fail)
 
 1️⃣ Run an unlabeled pod:
-bash
-CopyEdit
 
 
 kubectl run unlabeled-client --image=busybox:1.28 -n netpol-demo --rm -it --restart=Never -- sh
@@ -283,7 +223,6 @@ kubectl run unlabeled-client --image=busybox:1.28 -n netpol-demo --rm -it --rest
 
 Then from inside the shell:
 sh
-CopyEdit
 
 
 wget -qO- <nginx-server IP>
