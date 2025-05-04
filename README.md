@@ -1,7 +1,9 @@
 # k8s-security-home-lab
 
 ✅ What You’ve Mastered So Far
+
 Area	Status	Notes
+
 🔧 Kubernetes Cluster Build	✅	kubeadm-based, containerd, PSA configured
 
 📦 Helm + App Deployment	✅	Includes liveness/readiness probes, HPA
@@ -26,10 +28,14 @@ Area	Status	Notes
 
 🟡 Optional/Polish Areas (Not Required for CKS, But Nice to Know)
 
+---
+
 Task	Status
 Sigstore Policy Controller	Optional
 Automating cosign policy enforcement via Kyverno or Gatekeeper	Optional
 EFK or Loki Log Stack for deeper observability	Optional
+
+---
 
 🔁 Next Step
 You're at the "lock it in" stage — repeat the full workflow:
