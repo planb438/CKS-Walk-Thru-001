@@ -1,4 +1,4 @@
-## 1. helm
+## helm
 
 1. Helm: Installed, Used for App Deployment
 
