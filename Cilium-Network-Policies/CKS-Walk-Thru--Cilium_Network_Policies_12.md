@@ -1,6 +1,6 @@
 ## Cilium Network Policies
 
-
+---
 
 
 
@@ -9,46 +9,48 @@ We'll now move into enforcing pod-to-pod communication rules — a core CKS topi
 Ready to begin with network policy basics and Cilium setup validation?
 
 
-
+-
 
 Awesome — let’s lock down pod-to-pod communication using Cilium 🔒🐡
 
 🌐 Step 1: Validate Cilium Is Installed & Managing Networking
 First, make sure Cilium is up and running.
-bash
-CopyEdit
+
+-
 
 
 kubectl get pods -n kube-system -l k8s-app=cilium
 
+-
 
 You should see one Cilium pod per node:
 
+--
 
 NAME           READY   STATUS    RESTARTS   AGE
 cilium-abc1    1/1     Running   0          3d
 cilium-def2    1/1     Running   0          3d
 
+--
 
 You can also check the CNI config:
 
-
+-
 kubectl get daemonset cilium -n kube-system
-
+-
 
 If it’s not installed yet, we’ll install it — just let me know.
+-
+🔐 Step 2: Create Two Test Pods in a Namespace Let’s create a namespace and two pods to simulate isolated microservices.
 
-🔐 Step 2: Create Two Test Pods in a Namespace
-Let’s create a namespace and two pods to simulate isolated microservices.
-
-
+-
 
 kubectl create ns netpol-demo
-
+-
 
 Now apply this YAML:
 
-
+-
 apiVersion: v1
 kind: Pod
 metadata:
@@ -76,27 +78,28 @@ spec:
   - name: nginx
     image: nginx
 
-
+-
 Apply with:
 
-
+-
 kubectl apply -f <filename>.yaml
 
-
+-
 Or paste directly into kubectl apply -f -.
 
-
+-
 🔎 Step 3: Test Communication (Pre-NetworkPolicy)
 Wait a few seconds for the pods to come up, then exec into the client:
 
-
+-
 kubectl get pods -n netpol-demo -o wide
+-
 kubectl exec -n netpol-demo busybox-client -- wget -qO- (nginx-server) ## the ip address of the nginx-server
-
+-
 
 You should see NGINX HTML output — this confirms communication works before a policy is applied.
 Shall we now write a NetworkPolicy to block all traffic and then selectively allow it?
-
+-
 
 Welcome back — great work resolving both the Falco logging issue and Cilium DNS problem! You're right where we left off:
 You verified:
@@ -104,13 +107,15 @@ You verified:
 
 • So networking works before a policy is applied ✅
 
+-
 
 
 🔒 Step: Apply a Default Deny NetworkPolicy
 Let’s now block all ingress traffic to nginx-server.
 
+-
 1️⃣ Create a default deny policy:
-
+-
 
 
 # deny-all.yaml
