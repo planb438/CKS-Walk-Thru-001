@@ -1,4 +1,4 @@
-# k8s-security-home-lab
+# CKS-Walk-Thru-001
 
 ✅ What You’ve Mastered So Far
 
