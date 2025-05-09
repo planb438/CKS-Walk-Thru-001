@@ -1,6 +1,11 @@
 ### Kube-bench
-kube-bench is a Go application that checks whether Kubernetes is deployed securely by running the checks documented in the CIS Kubernetes Benchmark.
-Tests are configured with YAML files, making this tool easy to update as test specifications evolve.
+
+---
+
+kube-bench is a Go application that checks whether Kubernetes is deployed securely by running the checks documented in the CIS Kubernetes Benchmark. Tests are configured with YAML files, making this tool easy to update as test specifications evolve.
+
+-
+
  kube-bench implements the CIS Kubernetes Benchmark as closely as possible.
 
 
